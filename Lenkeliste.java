@@ -180,8 +180,6 @@ public class Lenkeliste<T> implements Liste<T>{
           if(this.compareTo(anna) < 0) return -1;
           return 0;
       }
-      /*
-  
 
 
   }

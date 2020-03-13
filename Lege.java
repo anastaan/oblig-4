@@ -23,11 +23,11 @@ class Lege implements Comparable<Lege>{
   }
 
   // Lager en ny MillitaerResept, legger det til utskrevedeResepter, og returnerer det. Bare Spesialister kan skrive ut Narkotiske legemidler.
-  public MillitaerResept skrivMillitaerResept(Legemiddel legemiddel, Pasient pasient, int reit) throws UlovligUtskrift{
+  public Militarresept skrivMillitaerResept(Legemiddel legemiddel, Pasient pasient, int reit) throws UlovligUtskrift{
     // Dersom legen ikke er Spesialist og legemiddelet er Narkotisk, skal det kastes et unntak (UlovligUtskrift).
     if (legemiddel instanceof Narkotisk && this instanceof Spesialist == false) throw new UlovligUtskrift(this, legemiddel);
 
-    MillitaerResept nyResept = new MillitaerResept(legemiddel, this, pasient, reit);
+    Militarresept nyResept = new Militarresept(legemiddel, this, pasient, reit);
     utskrevedeResepter.leggTil(nyResept);
     return nyResept;
   }
