@@ -1,8 +1,11 @@
 class Pasient {
-  //Pasient tar inn variablene navn og fodselsnummer som Strings i konstruktøren
-  //hvert Pas-objekt har i tillegg en unik ID int id; denne genereres fra statisk variabel idCounter
-  //Pasient har en Stabel med Resept-objekter listeResepter
+  /*Pasient tar inn variablene navn og fodselsnummer som Strings i konstruktøren
+  hvert Pas-objekt har i tillegg en unik ID int id; denne genereres fra statisk variabel idCounter
+  Pasient har en Stabel med Resept-objekter listeResepter
 
+  torsdag 12.03 - Anastasia la til toString for sikkerhets skyld
+
+  */
   private String navn;
   private String fodselsnummer;
   //teller for unikt ID-nummer:
@@ -28,4 +31,14 @@ public void leggTilNyResept(Resept r) {
 public Stabel<Resept> hentResepter() {
   return listeResepter;
 }
+
+public int hentId() {
+  return id;
+}
+
+@Override
+public String toString() {
+  return "INFORMASJON OM PASIENT: \nPasientnavn: " + navn + "\nFodselsnummer: " + fodselsnummer + "\nID: " + id;
+}
+
 }

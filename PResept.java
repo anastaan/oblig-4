@@ -1,7 +1,9 @@
 public class PResept extends HvitResept{
 
-    public PResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId){
-        super(legemiddel, utskrivendeLege, pasientId, 3);
+  //torsdag 12.03 - Anastasia endret kons. til å ta inn Pasient i stedet for pasientId. Endret på denne delen av toString.
+
+    public PResept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient pasient){
+        super(legemiddel, utskrivendeLege, pasient, 3);
     }
 
     @Override

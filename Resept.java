@@ -1,27 +1,32 @@
 public abstract class Resept{
+/*
+torsdag 12.03 - Anastasia endret kons. til å ta inn Pasient i stedet for pasientId.
+                Endret derfor på metoden hentPasientId og denne delen av toString.
+*/
+
     //deklarerer instansevariabler
     public static int idTeller = 0;
     private int id;
     private Legemiddel legemiddel;
     protected Lege utskrivendeLege;
-    private int pasientId;
+    private Pasient pasient; //endret pasientId til Pasient pasient
     private int reit; //reiterasjoner
-    
 
-    public Resept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
+
+    public Resept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient pasient, int reit){
         idTeller++;
         id = idTeller;
         this.legemiddel = legemiddel;
         this.utskrivendeLege = utskrivendeLege;
-        this.pasientId = pasientId;
+        this.pasient = pasient;
         this.reit = reit;
-        
+
     }
 
     public int hentId(){
         return id;
     }
-    
+
     public Legemiddel hentLegemiddel(){
         return legemiddel;
     }
@@ -31,7 +36,7 @@ public abstract class Resept{
     }
 
     public int hentPasientId(){
-        return pasientId;
+        return pasient.hentId();
     }
 
     public int hentReit(){

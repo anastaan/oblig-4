@@ -4,9 +4,11 @@ public class BlaaResept extends Resept{
     * fiksa rabatten
     *innså at jeg kunne generalisere toString om jeg lagde en fargevariabel, men orka ikke gjøre det
 
+    *torsdag 12.03 - Anastasia endret kons. til å ta inn Pasient i stedet for pasientId. Endret på denne delen av toString.
+
   */
-    public BlaaResept(Legemiddel legemiddel, Lege utskrivendeLege, int pasientId, int reit){
-        super(legemiddel, utskrivendeLege, pasientId, reit);
+    public BlaaResept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient pasient, int reit){
+        super(legemiddel, utskrivendeLege, pasient, reit);
 
     }
 
