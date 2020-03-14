@@ -5,8 +5,8 @@ public class Lenkeliste<T> implements Liste<T>{
 
   protected int stoerrelse = 0;
 
-  Node hode;
-  Node hale;
+  protected Node hode;
+  protected Node hale;
   /*siden vi skal legge til i den ene enden og
   fjerne fra den andre er det greit å ha en peker
   på det siste objektet, synes jeg.
@@ -32,12 +32,11 @@ public class Lenkeliste<T> implements Liste<T>{
       hale = nyNode;
       //hale peker nyNode
       stoerrelse++;
-
   }
 
   public void leggTil(int pos, T ny){
       if(pos > stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(-1);
+          throw new UgyldigListeIndeks(pos);
       }
 
       if (pos == stoerrelse){
@@ -72,7 +71,7 @@ public class Lenkeliste<T> implements Liste<T>{
 
   public void sett(int pos, T ny) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(-1);
+          throw new UgyldigListeIndeks(pos);
       }
 
       if (pos == 0){
@@ -105,7 +104,7 @@ public class Lenkeliste<T> implements Liste<T>{
 
   public T hent(int pos) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(-1);
+          throw new UgyldigListeIndeks(pos);
       }
 
       if (stoerrelse == 1 || pos == 0){
@@ -128,7 +127,7 @@ public class Lenkeliste<T> implements Liste<T>{
   //fjerner fra hodeenden
   public T fjern(int pos) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(-1);
+          throw new UgyldigListeIndeks(pos);
       }//kaster unntak om pos er en ugyldig indeks
 
       if (pos == 0){
@@ -146,8 +145,11 @@ public class Lenkeliste<T> implements Liste<T>{
       temp.neste = fjernes.neste;
       //Noden før fjernes peker på Noden etter fjernes
       //ingenting peker på fjernes lenger
-
-
+	
+	// Hvis det som skal fjernes er det siste elementet, skal det foregaaende elementet settes som hale.
+	if (fjernes == hale)
+		hale = temp;
+	
       stoerrelse--;
       return fjernes.hentInnhold();
   }
