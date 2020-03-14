@@ -218,7 +218,7 @@ public class Lenkeliste<T> implements Liste<T>{
 	}
 
 	public boolean hasNext() {
-	  return (denne.neste != null);
+	  return (denne != null);
 	}
 	  //hvis denne ikke lenger peker på en node, har vi nådd slutten av listen
 	  //dette er ikke det samme som hvis innholdet av en node er null (det fortsetter vi forbi)
