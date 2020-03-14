@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class Lenkeliste<T> implements Liste<T>{
 
   protected int stoerrelse = 0;
@@ -155,6 +157,10 @@ public class Lenkeliste<T> implements Liste<T>{
       return temp.hentInnhold();
 
   }
+  
+  public LenkelisteIterator<T> iterator() {
+      return new LenkelisteIterator<T>(this);
+  }
 
 
   protected class Node{
@@ -182,6 +188,34 @@ public class Lenkeliste<T> implements Liste<T>{
       }
 
 
+  }
+  
+  
+  protected class LenkelisteIterator{
+      private Lenkeliste<T> minListe;
+      private int pos;
+      
+      public LenkelisteIterator(Lenkeliste<T> l){
+          minListe = l;
+          pos = 0; 
+      }
+    
+      public T next() {
+          Node hentes = hode;
+          //begynner på begynnelsen
+          for (int i = 1; i<pos; i++){
+              hentes = hentes.neste;
+          }
+          //finner Noden hvis innhold skal hentes
+          pos++;
+          return hentes.hentInnhold();
+      }
+    
+      public boolean hasNext() {
+          return (pos < minListe.stoerrelse);
+      }
+    
+    
   }
 
 
