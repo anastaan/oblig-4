@@ -13,12 +13,11 @@ public class PResept extends HvitResept{
 
     @Override
     public double prisAaBetale(){
-
+  
         if (this.hentLegemiddel().hentPris() <= 108){
             return 0;
-        } else {
-            return this.hentLegemiddel().hentPris() - 108;
         }
+        return this.hentLegemiddel().hentPris() - 108;
     }
 
     @Override
