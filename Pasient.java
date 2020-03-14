@@ -1,4 +1,4 @@
-class Pasient {
+class Pasient{
   /*Pasient tar inn variablene navn og fodselsnummer som Strings i konstruktøren
   hvert Pas-objekt har i tillegg en unik ID int id; denne genereres fra statisk variabel idCounter
   Pasient har en Stabel med Resept-objekter listeResepter
@@ -21,24 +21,28 @@ class Pasient {
     idCounter++;
   }
 
-//legg til ny resept i Stabel
-//kalles på leggPaa() i klasse Stabel
-public void leggTilNyResept(Resept r) {
-  listeResepter.leggPaa(r);
-}
+  //legg til ny resept i Stabel
+  //kalles på leggPaa() i klasse Stabel
+  public void leggTilNyResept(Resept r) {
+    listeResepter.leggPaa(r);
+  }
 
-//returnerer listeResepter
-public Stabel<Resept> hentResepter() {
-  return listeResepter;
-}
+  //returnerer listeResepter
+  public Stabel<Resept> hentResepter() {
+    return listeResepter;
+  }
 
-public int hentId() {
-  return id;
-}
+  public int hentId() {
+    return id;
+  }
 
-@Override
-public String toString() {
-  return "INFORMASJON OM PASIENT: \nPasientnavn: " + navn + "\nFodselsnummer: " + fodselsnummer + "\nID: " + id;
-}
+  @Override
+  public String toString() {
+    return "INFORMASJON OM PASIENT: \nPasientnavn: " + navn + "\nFodselsnummer: " + fodselsnummer + "\nID: " + id;
+  }
+
+  public String hentNavn(){
+    return navn;
+  }
 
 }

@@ -1,12 +1,11 @@
-
 import java.util.Iterator;
 
 public class Lenkeliste<T> implements Liste<T>{
 
   protected int stoerrelse = 0;
 
-  protected Node hode;
-  protected Node hale;
+  Node hode;
+  Node hale;
   /*siden vi skal legge til i den ene enden og
   fjerne fra den andre er det greit å ha en peker
   på det siste objektet, synes jeg.
@@ -32,11 +31,12 @@ public class Lenkeliste<T> implements Liste<T>{
       hale = nyNode;
       //hale peker nyNode
       stoerrelse++;
+
   }
 
   public void leggTil(int pos, T ny){
       if(pos > stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(pos);
+          throw new UgyldigListeIndeks(-1);
       }
 
       if (pos == stoerrelse){
@@ -71,7 +71,7 @@ public class Lenkeliste<T> implements Liste<T>{
 
   public void sett(int pos, T ny) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(pos);
+          throw new UgyldigListeIndeks(-1);
       }
 
       if (pos == 0){
@@ -104,7 +104,7 @@ public class Lenkeliste<T> implements Liste<T>{
 
   public T hent(int pos) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(pos);
+          throw new UgyldigListeIndeks(-1);
       }
 
       if (stoerrelse == 1 || pos == 0){
@@ -127,7 +127,7 @@ public class Lenkeliste<T> implements Liste<T>{
   //fjerner fra hodeenden
   public T fjern(int pos) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
-          throw new UgyldigListeIndeks(pos);
+          throw new UgyldigListeIndeks(-1);
       }//kaster unntak om pos er en ugyldig indeks
 
       if (pos == 0){
@@ -145,10 +145,8 @@ public class Lenkeliste<T> implements Liste<T>{
       temp.neste = fjernes.neste;
       //Noden før fjernes peker på Noden etter fjernes
       //ingenting peker på fjernes lenger
-	
-	// Hvis det som skal fjernes er det siste elementet, skal det foregaaende elementet settes som hale.
-	if (fjernes == hale) hale = temp;
-	
+
+
       stoerrelse--;
       return fjernes.hentInnhold();
   }
@@ -192,34 +190,35 @@ public class Lenkeliste<T> implements Liste<T>{
       public String toString(){
           return "" + innhold + "";
       }
-	
-	  // ??? hvorfor?
-      public int compareTo(T anna){
-          if(this.compareTo(anna) > 0) return 1;
-          if(this.compareTo(anna) < 0) return -1;
-          return 0;
-      }
+
+
+      /*vi kan fjerne compareTo her
+		  kompilatoren klager fordi de to nodene teoretisk kunne vært usammenlignbare
+		  "cannot compare Object to T"
+	  */
+
 
   }
   
+  
   protected class LenkelisteIterator implements Iterator<T>{
-	  private Lenkeliste<T> minListe; //listen vi itererer over
+      private Lenkeliste<T> minListe; //listen vi itererer over
 	  private Node denne; //den noden vi har "kommet til"
       
-	public LenkelisteIterator(Liste<T> l){
-	  minListe = l;
-	  denne = minListe.hode; //vi starter på hodet til listen
-	}
-
-	public T next() {
-	  T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
-	  denne = denne.neste;
-	  return resultat;
-	}
-
-	public boolean hasNext() {
-	  return (denne != null);
-	}
+      public LenkelisteIterator(Lenkeliste<T> l){
+          minListe = l;
+          denne = minListe.hode; //vi starter på hodet til listen
+      }
+    
+      public T next() {
+		  T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
+          denne = denne.neste;
+          return resultat;
+      }
+    
+      public boolean hasNext() {
+          return (denne != null);
+      }
 	  //hvis denne ikke lenger peker på en node, har vi nådd slutten av listen
 	  //dette er ikke det samme som hvis innholdet av en node er null (det fortsetter vi forbi)
   }

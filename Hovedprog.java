@@ -2,11 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-
-// må legge inn unntak og sånt.
-
-
-
 public class Hovedprog{
   public static void main(String[] args) throws FileNotFoundException{
     Liste<Pasient> pasienter = new Lenkeliste<Pasient>();
@@ -51,8 +46,7 @@ public class Hovedprog{
 
       try{
         for (Lege lege:leger){
-          if (lege.hentNavn().equals(info[0]))
-            gyldigNavn = false;
+          if (lege.hentNavn().equals(info[0])) gyldigNavn = false;
         }
 
         if (gyldigNavn){
@@ -108,28 +102,32 @@ public class Hovedprog{
     }
 
     System.out.println();
-    for (int i = 0; i< 10; i++){
-      System.out.println(pasienter.hent(i).hentNavn());
-      System.out.println(pasienter.hent(i).hentResepter().stoerrelse());
+    for (Pasient p:pasienter){
+      System.out.println(p.hentNavn());
+      System.out.println();
     }
 
     System.out.println();
-    for (int i = 0; i < 10; i++){
-      System.out.println(legemidler.hent(i).hentNavn());
+    for (Legemiddel lm:legemidler){
+      System.out.println(lm);
+      System.out.println();
     }
 
+    System.out.println();
     for (Lege lege:leger){
       System.out.println(lege);
+      System.out.println();
     }
 
     System.out.println();
-    for (int i = 0; i < 10; i++){
-      System.out.println(resepter.hent(i));
-      System.out.println();
+    for (Resept r:resepter){
+      System.out.println(r);
       System.out.println();
     }
 
-    System.out.println("legemideler:" + legemidler.stoerrelse());
+    System.out.println("legemidler:" + legemidler.stoerrelse());
+    System.out.println("pasienter:" + pasienter.stoerrelse());
+    System.out.println("leger:" + leger.stoerrelse());
     System.out.println("resepter:" + resepter.stoerrelse());
 
   }
