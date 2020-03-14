@@ -1,15 +1,12 @@
 public class HvitResept extends Resept{
 
-//torsdag 12.03 - Anastasia endret kons. til å ta inn Pasient i stedet for pasientId. Endret på denne delen av toString.
-
     public HvitResept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient pasient, int reit){
         super(legemiddel, utskrivendeLege, pasient, reit);
     }
 
-
+    @Override
     public double prisAaBetale(){
         return this.hentLegemiddel().hentPris();
-        //fullpris
     }
 
     @Override
