@@ -1,19 +1,18 @@
 
 
 public abstract class Legemiddel{
-    //deklarerer instansevariabler
+   
     public static int idTeller = 0;
     private int id;
     private String navn;
     private double pris;
     private double virkestoff;
 
-    /**/
+    
     public Legemiddel(String n, double p, double v){
         id = idTeller;
-        //den første er 0
         idTeller++;
-        //øker telleren
+
         navn = n;
         pris = p;
         virkestoff = v;
@@ -36,9 +35,7 @@ public abstract class Legemiddel{
     }
 
     protected void settNyPris(int nyPris){
-        //System.out.println("Gammel pris: " + pris);
         pris = nyPris;
-        //System.out.println("Ny pris: " + pris);
     }
 
     public abstract String toString();
