@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class Lenkeliste<T> implements Liste<T>{
 
   protected int stoerrelse = 0;
@@ -89,6 +91,17 @@ public class Lenkeliste<T> implements Liste<T>{
 
   }
 
+  public String toString() { //en liten bonus for å demonstrere DA POWAH of the iterator
+  	  String resultat = getClass().getName() + "[";
+	  boolean foerste = true;
+	  for (T innhold : this) {
+	  	  if (!foerste) {resultat += ", ";} else {foerste = false;}
+		  resultat += "" + innhold + "";
+	  }
+	  resultat += "]";
+	  return resultat;
+  }
+
   public T hent(int pos) throws UgyldigListeIndeks{
       if(pos >= stoerrelse || pos < 0){
           throw new UgyldigListeIndeks(-1);
@@ -155,6 +168,10 @@ public class Lenkeliste<T> implements Liste<T>{
       return temp.hentInnhold();
 
   }
+  
+  public Iterator<T> iterator() {
+      return new LenkelisteIterator(this);
+  }
 
 
   protected class Node{
@@ -182,6 +199,29 @@ public class Lenkeliste<T> implements Liste<T>{
       }
 
 
+  }
+  
+  
+  protected class LenkelisteIterator implements Iterator<T>{
+      private Lenkeliste<T> minListe; //listen vi itererer over
+	  private Node denne; //den noden vi har "kommet til"
+      
+      public LenkelisteIterator(Lenkeliste<T> l){
+          minListe = l;
+          denne = minListe.hode; //vi starter på hodet til listen
+      }
+    
+      public T next() {
+		  T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
+          denne = denne.neste;
+          return resultat;
+      }
+    
+      public boolean hasNext() {
+          return (denne != null);
+      }
+	  //hvis denne ikke lenger peker på en node, har vi nådd slutten av listen
+	  //dette er ikke det samme som hvis innholdet av en node er null (det fortsetter vi forbi)
   }
 
 
