@@ -1,3 +1,4 @@
+
 import java.util.Iterator;
 
 public class Lenkeliste<T> implements Liste<T>{
@@ -203,7 +204,7 @@ public class Lenkeliste<T> implements Liste<T>{
   
   
   protected class LenkelisteIterator implements Iterator<T>{
-      private Lenkeliste<T> minListe; //listen vi itererer over
+    private Lenkeliste<T> minListe; //listen vi itererer over
 	  private Node denne; //den noden vi har "kommet til"
       
       public LenkelisteIterator(Lenkeliste<T> l){
@@ -212,7 +213,7 @@ public class Lenkeliste<T> implements Liste<T>{
       }
     
       public T next() {
-		  T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
+		      T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
           denne = denne.neste;
           return resultat;
       }
