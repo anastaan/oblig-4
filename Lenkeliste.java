@@ -147,8 +147,7 @@ public class Lenkeliste<T> implements Liste<T>{
       //ingenting peker på fjernes lenger
 	
 	// Hvis det som skal fjernes er det siste elementet, skal det foregaaende elementet settes som hale.
-	if (fjernes == hale)
-		hale = temp;
+	if (fjernes == hale) hale = temp;
 	
       stoerrelse--;
       return fjernes.hentInnhold();
@@ -193,36 +192,34 @@ public class Lenkeliste<T> implements Liste<T>{
       public String toString(){
           return "" + innhold + "";
       }
-
-
+	
+	  // ??? hvorfor?
       public int compareTo(T anna){
           if(this.compareTo(anna) > 0) return 1;
           if(this.compareTo(anna) < 0) return -1;
           return 0;
       }
 
-
   }
   
-  
   protected class LenkelisteIterator implements Iterator<T>{
-    private Lenkeliste<T> minListe; //listen vi itererer over
+	  private Lenkeliste<T> minListe; //listen vi itererer over
 	  private Node denne; //den noden vi har "kommet til"
       
-      public LenkelisteIterator(Lenkeliste<T> l){
-          minListe = l;
-          denne = minListe.hode; //vi starter på hodet til listen
-      }
-    
-      public T next() {
-		      T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
-          denne = denne.neste;
-          return resultat;
-      }
-    
-      public boolean hasNext() {
-          return (denne != null);
-      }
+	public LenkelisteIterator(Liste<T> l){
+	  minListe = l;
+	  denne = minListe.hode; //vi starter på hodet til listen
+	}
+
+	public T next() {
+	  T resultat = denne.innhold; //vi må hente innholdet før vi inkrementerer denne
+	  denne = denne.neste;
+	  return resultat;
+	}
+
+	public boolean hasNext() {
+	  return (denne.neste != null);
+	}
 	  //hvis denne ikke lenger peker på en node, har vi nådd slutten av listen
 	  //dette er ikke det samme som hvis innholdet av en node er null (det fortsetter vi forbi)
   }
