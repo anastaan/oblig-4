@@ -3,13 +3,118 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Hovedprog{
-  public static void main(String[] args) throws FileNotFoundException{
-    Liste<Pasient> pasienter = new Lenkeliste<Pasient>();
-    Liste<Legemiddel> legemidler = new Lenkeliste<Legemiddel>();
-    Liste<Lege> leger = new SortertLenkeliste<Lege>();
-    Liste<Resept> resepter = new Lenkeliste<Resept>();
+  static Liste<Pasient> pasienter = new Lenkeliste<Pasient>();
+  static Liste<Legemiddel> legemidler = new Lenkeliste<Legemiddel>();
+  static Liste<Lege> leger = new SortertLenkeliste<Lege>();
+  static Liste<Resept> resepter = new Lenkeliste<Resept>();
+  static Scanner inputScanner;
+  static String brukerInput;
 
-    Scanner filLeser = new Scanner(new File("myeInndata.txt"));
+  public static void main(String[] args) throws FileNotFoundException{
+    System.out.println("\nVelkommen til karantene!");
+    kommandoLoekke();
+  }
+
+  public static void kommandoLoekke() throws FileNotFoundException{
+    System.out.println("\n\n1. Legg til...\n2. Skriv ut informasjon\n3. Les fra fil\n4. Avslutt");
+    inputScanner = new Scanner(System.in);
+    brukerInput = inputScanner.nextLine();
+
+    if (brukerInput.equals("1")){
+      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...resept\n4. ...legemiddel");
+      brukerInput = inputScanner.nextLine();
+      if (brukerInput.equals("1")){
+        leggTilLege();
+      }
+      else System.out.println("\nUgyldig input!");
+    }
+
+    else if (brukerInput.equals("2")){
+
+    }
+
+    else if (brukerInput.equals("3")){
+      System.out.println("\nHvilken fil vil du lese fra?\n");
+      brukerInput = inputScanner.nextLine();
+      try{
+        lesFraFil(brukerInput);
+        System.out.println("La til informasjonen inn i systemet :)");
+      } catch (FileNotFoundException e){
+        System.out.println("Fant ikke filnavnet. Husk aa skrive .txt");
+      }
+    }
+
+    else if (brukerInput.equals ("4")){
+      System.exit(0);
+    }
+
+    kommandoLoekke();
+  }
+
+  public static void leggTilLege() throws FileNotFoundException{
+    System.out.println("\n1. Lag ny lege\n2. Lag ny spesialist\n3. Tilbake");
+    brukerInput = inputScanner.nextLine();
+
+    if (brukerInput.equals("1")){
+      System.out.println("Skriv inn navn:");
+      brukerInput = inputScanner.nextLine();
+      Boolean gyldigNavn = true;
+      for (Lege lege:leger){
+        if (lege.hentNavn().equals(brukerInput)) gyldigNavn = false;
+      }
+
+      if (gyldigNavn){
+        leger.leggTil(new Lege(brukerInput));
+        System.out.println("La til " + brukerInput);
+      }
+
+      else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
+      kommandoLoekke();
+    }
+
+    else if (brukerInput.equals("2")){
+      System.out.println("Skriv inn navn:");
+      String navn = inputScanner.nextLine();
+      int id = 0;
+
+      Boolean okNr = false;
+      while (!okNr){
+        System.out.println("Skriv inn kontroll id:");
+        brukerInput = inputScanner.nextLine();
+        try{
+          id = Integer.parseInt(brukerInput);
+          okNr = true;
+        } catch (NumberFormatException e){
+          System.out.println("\nUgyldig kontroll id!\n");
+        }
+      }
+
+      Boolean gyldigNavn = true;
+      for (Lege lege:leger){
+        if (lege.hentNavn().equals(navn)) gyldigNavn = false;
+      }
+
+      if (gyldigNavn){
+        leger.leggTil(new Spesialist(navn, id));
+        System.out.println("La til " + navn);
+      }
+
+      else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
+      kommandoLoekke();
+    }
+
+    else if(brukerInput.equals("3")) kommandoLoekke();
+
+    else{
+      System.out.println("\nUgyldig input!");
+      leggTilLege();
+    }
+
+  }
+
+  public static void lesFraFil(String filnavn) throws FileNotFoundException{
+
+    Scanner filLeser = new Scanner(new File(filnavn));
 
     // Gaar gjennom foerste "del" av fila, som bestaar av pasienter. Lager objekter og legger de til i pasienter.
     filLeser.nextLine();
@@ -100,35 +205,5 @@ public class Hovedprog{
         System.out.println(e);
       }
     }
-
-    System.out.println();
-    for (Pasient p:pasienter){
-      System.out.println(p.hentNavn());
-      System.out.println();
-    }
-
-    System.out.println();
-    for (Legemiddel lm:legemidler){
-      System.out.println(lm);
-      System.out.println();
-    }
-
-    System.out.println();
-    for (Lege lege:leger){
-      System.out.println(lege);
-      System.out.println();
-    }
-
-    System.out.println();
-    for (Resept r:resepter){
-      System.out.println(r);
-      System.out.println();
-    }
-
-    System.out.println("legemidler:" + legemidler.stoerrelse());
-    System.out.println("pasienter:" + pasienter.stoerrelse());
-    System.out.println("leger:" + leger.stoerrelse());
-    System.out.println("resepter:" + resepter.stoerrelse());
-
   }
 }
