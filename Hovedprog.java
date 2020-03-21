@@ -16,7 +16,7 @@ public class Hovedprog{
   }
 
   public static void kommandoLoekke() throws FileNotFoundException{
-    System.out.println("\n\n1. Legg til...\n2. Skriv ut informasjon\n3. Les fra fil\n4. Avslutt");
+    System.out.println("\n\n1. Legg til...\n2. Skriv ut informasjon\n3. Les fra fil\n4. Bruk resept\n5. Avslutt");
     inputScanner = new Scanner(System.in);
     brukerInput = inputScanner.nextLine();
 
@@ -60,11 +60,64 @@ public class Hovedprog{
       }
     }
 
-    else if (brukerInput.equals ("4")){
+    else if (brukerInput.equals("4")){
+      if (resepter.stoerrelse() < 1)
+        System.out.println("Ingen resepter eksisterer!");
+      else
+        brukResept();
+    }
+
+    else if (brukerInput.equals ("5")){
       System.exit(0);
     }
 
     kommandoLoekke();
+  }
+
+  public static void brukResept(){
+    Liste<Pasient> pasListe = new Lenkeliste<Pasient>();
+    Pasient pas1 = null;
+
+    for (Pasient pas:pasienter){
+      if (pas.hentResepter().stoerrelse() > 0)
+        pasListe.leggTil(pas);
+    }
+
+    while (pas1 == null){
+      int i = 1;
+      for (Pasient pas:pasListe)
+        System.out.println(i++ + ". " + pas.hentNavn());
+
+      System.out.println("\nHvilken pasient vil du se resepter for?" + pasListe.stoerrelse());
+      try{
+        pas1 = pasListe.hent(Integer.parseInt(inputScanner.nextLine()) - 1);
+      } catch (UgyldigListeIndeks e){
+        System.out.println("Ugyldig nummer!");
+      } catch (NumberFormatException e){
+        System.out.println("Ugyldig nummer!");
+      }
+    }
+
+    Resept valgtResept = null;
+    while (valgtResept == null){
+      int i = 1;
+      for (Resept res:pas1.hentResepter()){
+        System.out.println(i++ +". " + res.hentLegemiddel().hentNavn() + "Reit: " + res.hentReit());
+      }
+      System.out.println("\nHvilken resept vil du bruke?");
+      try{
+        valgtResept = pas1.hentResepter().hent(Integer.parseInt(inputScanner.nextLine()) - 1);
+      } catch (UgyldigListeIndeks e){
+        System.out.println("Ugyldig nummer!");
+      } catch (NumberFormatException e){
+        System.out.println("Ugyldig nummer!");
+      }
+    }
+    if (valgtResept.bruk())
+      System.out.println("Brukte resept paa " + valgtResept.hentLegemiddel().hentNavn() + ". Antall gjenvaerende reit: " + valgtResept.hentReit());
+    else
+      System.out.println("Kunne ikke bruke resept paa " + valgtResept.hentLegemiddel().hentNavn() + " (ingen gjenvaerende reit).");
+
   }
 
   public static void leggTilResept(){
