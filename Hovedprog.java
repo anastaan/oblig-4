@@ -21,15 +21,31 @@ public class Hovedprog{
     brukerInput = inputScanner.nextLine();
 
     if (brukerInput.equals("1")){
-      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...resept\n4. ...legemiddel");
+      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...legemiddel\n4. ...resept");
       brukerInput = inputScanner.nextLine();
-      if (brukerInput.equals("1")){
+      if (brukerInput.equals("1"))
         leggTilLege();
+      else if (brukerInput.equals("2"))
+        leggTilPasient();
+      else if (brukerInput.equals("3"))
+        leggTilLegemiddel();
+      else if (brukerInput.equals("4")){
+        if (pasienter.stoerrelse() < 1 || legemidler.stoerrelse() < 1 || leger.stoerrelse() < 1)
+          System.out.println("Mangler elemtener for aa lage resept.");
+        else
+          leggTilResept();
       }
       else System.out.println("\nUgyldig input!");
     }
 
     else if (brukerInput.equals("2")){
+      for (Lege lege:leger){
+        System.out.println(lege);
+      }
+
+      for(Legemiddel lm:legemidler){
+        System.out.println(lm);
+      }
 
     }
 
@@ -51,8 +67,203 @@ public class Hovedprog{
     kommandoLoekke();
   }
 
-  public static void leggTilLege() throws FileNotFoundException{
-    System.out.println("\n1. Lag ny lege\n2. Lag ny spesialist\n3. Tilbake");
+  public static void leggTilResept(){
+    String type = "0";
+    while (type.equals("0")){
+      System.out.println("\nVelg hvilken type resept:\n1. Blaa\n2. Hvit\n3. Millitaer\n4. P");
+      type = inputScanner.nextLine();
+      if (!type.equals("1") && !type.equals("2") && !type.equals("3") && !type.equals("4")){
+        type = "0";
+        System.out.println("Ugydig input!");
+      }
+    }
+
+    Legemiddel lm = null;
+    while (lm == null){
+      int i = 0;
+      for (Legemiddel legeMid:legemidler)
+        System.out.println(i++ +". " + legeMid);
+      System.out.println("\nVelg et legemiddel");
+      try{
+        i = Integer.parseInt(inputScanner.nextLine());
+        lm = legemidler.hent(i);
+      } catch (UgyldigListeIndeks e){
+        System.out.println("Ugyldig nummer!");
+      } catch (NumberFormatException e){
+        System.out.println("Ugyldig nummer!");
+      }
+    }
+
+    Lege lege = null;
+    while (lege == null){
+      int i = 0;
+      for (Lege le:leger)
+        System.out.println(i++ +". " + le);
+      System.out.println("\nVelg en lege");
+      try{
+        i = Integer.parseInt(inputScanner.nextLine());
+        lege = leger.hent(i);
+      } catch (UgyldigListeIndeks e){
+        System.out.println("Ugyldig nummer!");
+      } catch (NumberFormatException e){
+        System.out.println("Ugyldig nummer!");
+      }
+    }
+
+    Pasient pasient = null;
+    while (pasient == null){
+      int i = 0;
+      for (Pasient pas:pasienter)
+        System.out.println(i++ +". " + pas);
+      System.out.println("\nVelg en pasient");
+      try{
+        i = Integer.parseInt(inputScanner.nextLine());
+        pasient = pasienter.hent(i);
+      } catch (UgyldigListeIndeks e){
+        System.out.println("Ugyldig nummer!");
+      } catch (NumberFormatException e){
+        System.out.println("Ugyldig nummer!");
+      }
+    }
+
+    if (type.equals("4")){
+      try{
+        resepter.leggTil(lege.skrivPResept(lm, pasient));
+        System.out.println("La til resepten for " + lm.hentNavn() + " til " + pasient.hentNavn());
+      } catch (UlovligUtskrift e){
+        System.out.println(e);
+      }
+    }
+
+    else{
+      int reit = 0;
+      while (reit == 0){
+        System.out.println("\nVelg antall reit");
+        try{
+          reit = Integer.parseInt(inputScanner.nextLine());
+        } catch (NumberFormatException e){
+          System.out.println("Ugyldig nummer!");
+        }
+      }
+
+      if (type.equals("1")){
+        try{
+          resepter.leggTil(lege.skrivBlaaResept(lm, pasient, reit));
+          System.out.println("La til resepten for " + lm.hentNavn() + " til " + pasient.hentNavn());
+        } catch (UlovligUtskrift e){
+          System.out.println(e);
+        }
+      }
+
+      else if (type.equals("2")){
+        try{
+          resepter.leggTil(lege.skrivHvitResept(lm, pasient, reit));
+          System.out.println("La til resepten for " + lm.hentNavn() + " til " + pasient.hentNavn());
+        } catch (UlovligUtskrift e){
+          System.out.println(e);
+        }
+      }
+
+      else if (type.equals("3")){
+        try{
+          resepter.leggTil(lege.skrivMillitaerResept(lm, pasient, reit));
+          System.out.println("La til resepten for " + lm.hentNavn() + " til " + pasient.hentNavn());
+        } catch (UlovligUtskrift e){
+          System.out.println(e);
+        }
+      }
+
+    }
+  }
+
+  public static void leggTilLegemiddel(){
+    String type = "0";
+    while (type.equals("0")){
+      System.out.println("\nVelg hvilken type legemiddel:\n1. Vanlig\n2. Narkotisk\n3. Vanedannende");
+      type = inputScanner.nextLine();
+      if (!type.equals("1") && !type.equals("2") && !type.equals("3")){
+        type = "0";
+        System.out.println("Ugydig input!");
+      }
+    }
+
+    System.out.println("Skriv inn navnet paa legemiddelet:");
+    String navn = inputScanner.nextLine();
+
+    double pris = 0;
+    Boolean okNr = false;
+    while (!okNr){
+      System.out.println("Skriv inn prisen paa legemiddelet:");
+      brukerInput = inputScanner.nextLine();
+      try{
+        pris = Double.parseDouble(brukerInput);
+        okNr = true;
+      } catch (NumberFormatException e){
+        System.out.println("\nUgyldig pris!\n");
+      }
+    }
+
+    double virkestoff = 0;
+    okNr = false;
+    while (!okNr){
+      System.out.println("Skriv inn virkestoffet paa legemiddelet:");
+      brukerInput = inputScanner.nextLine();
+      try{
+        virkestoff = Double.parseDouble(brukerInput);
+        okNr = true;
+      } catch (NumberFormatException e){
+        System.out.println("\nUgyldig virkestoff!\n");
+      }
+    }
+
+    if (!type.equals("1")){
+      int styrke = 0;
+      okNr = false;
+      while (!okNr){
+        System.out.println("Skriv inn styrekn paa legemiddelet:");
+        brukerInput = inputScanner.nextLine();
+        try{
+          virkestoff = Integer.parseInt(brukerInput);
+          okNr = true;
+        } catch (NumberFormatException e){
+          System.out.println("\nUgyldig styrke!\n");
+        }
+      }
+      if (type.equals("2"))
+        legemidler.leggTil(new Narkotisk(navn, pris, virkestoff, styrke));
+      if (type.equals("3"))
+        legemidler.leggTil(new Vanedannende(navn, pris, virkestoff, styrke));
+    }
+
+    else
+      legemidler.leggTil(new Vanlig(navn, pris, virkestoff));
+
+    System.out.println("La til legemiddelet " + navn);
+  }
+
+  public static void leggTilPasient(){
+    System.out.println("Skriv inn navn:");
+    String navn = inputScanner.nextLine();
+
+    int foedselsnummer = 0;
+    Boolean okNr = false;
+    while (!okNr){
+      System.out.println("Skriv inn foedselsnummer:");
+      brukerInput = inputScanner.nextLine();
+      try{
+        Integer.parseInt(brukerInput);
+        okNr = true;
+      } catch (NumberFormatException e){
+        System.out.println("\nUgyldig foedselsnummer!\n");
+      }
+    }
+
+    pasienter.leggTil(new Pasient(navn, brukerInput));
+    System.out.println("La til " + navn + " | " + brukerInput);
+  }
+
+  public static void leggTilLege(){
+    System.out.println("\n1. Lag ny lege\n2. Lag ny spesialist\n3. Tilbake til hovedmeny");
     brukerInput = inputScanner.nextLine();
 
     if (brukerInput.equals("1")){
@@ -69,7 +280,6 @@ public class Hovedprog{
       }
 
       else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
-      kommandoLoekke();
     }
 
     else if (brukerInput.equals("2")){
@@ -100,10 +310,9 @@ public class Hovedprog{
       }
 
       else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
-      kommandoLoekke();
     }
 
-    else if(brukerInput.equals("3")) kommandoLoekke();
+    else if(brukerInput.equals("3"));
 
     else{
       System.out.println("\nUgyldig input!");
