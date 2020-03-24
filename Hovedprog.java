@@ -3,24 +3,33 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Hovedprog{
+  // Instansvariablene er statiske, slik at vi faar tilgang til de.
+  // Deklarerer og initialiserer lister hvor informasjonen lagres.
   static Liste<Pasient> pasienter = new Lenkeliste<Pasient>();
   static Liste<Legemiddel> legemidler = new Lenkeliste<Legemiddel>();
   static Liste<Lege> leger = new SortertLenkeliste<Lege>();
   static Liste<Resept> resepter = new Lenkeliste<Resept>();
-  static Scanner inputScanner;
+  // Deklarerer og initialiserer en Scanner-variabel
+  static Scanner inputScanner = new Scanner(System.in);
+  // Deklarerer en String-variabel.
   static String brukerInput;
 
+  // Main-metoden printer ut en velkomst, og kjoerer metoden kommandoLoekke().
   public static void main(String[] args) throws FileNotFoundException{
     System.out.println("\nVelkommen til karantene!");
     kommandoLoekke();
   }
 
+  // Denne metoden fungerer som en hovedmeny for brukeren, hvor de kan navigere seg til de forskjellige delene av programmet.
   public static void kommandoLoekke() throws FileNotFoundException{
-    System.out.println("\n\nHovedmeny\n---------------\n1. Legg til...\n2. Skriv ut informasjon\n3. Statistikk\n4. Les fra fil\n5. Bruk resept\n6. Avslutt");
-    inputScanner = new Scanner(System.in);
+    // Her printes ut mulighetene brukeren har.
+    System.out.println("\n\nHovedmeny\n---------------\n1. Legg til...\n2. Skriv ut informasjon\n3. Statistikk\n4. Les fra fil\n5. Bruk resept\n6. Avslutt\n");
+    // Her faar brukeren sette brukerInput som en valgt string.
     brukerInput = inputScanner.nextLine();
 
+    // Dersom brukeren har tastet '1' kjoeres koden under.
     if (brukerInput.equals("1")){
+      // Brukeren blir presentert en undermeny hvor de kan velge en hva de oensker aa legge til.
       System.out.println("\n1. ...lege\n2. ...pasient\n3. ...legemiddel\n4. ...resept");
       brukerInput = inputScanner.nextLine();
       if (brukerInput.equals("1"))
@@ -30,6 +39,7 @@ public class Hovedprog{
       else if (brukerInput.equals("3"))
         leggTilLegemiddel();
       else if (brukerInput.equals("4")){
+        // Dersom det mangler noe for aa lage en resept og brukeren likevel proever, faar de en feilmelding.
         if (pasienter.stoerrelse() < 1 || legemidler.stoerrelse() < 1 || leger.stoerrelse() < 1)
           System.out.println("\nMangler elemtener for aa lage resept!");
         else
@@ -39,13 +49,16 @@ public class Hovedprog{
         System.out.println("\nUgyldig input!");
     }
 
+    // Dersom brukeren har tastet '2' kjoeres koden under.
     else if (brukerInput.equals("2")){
       for (Lege lege:leger){
         System.out.println(lege);
       }
     }
 
+    // Dersom brukeren har tastet '3' kjoeres koden under.
     else if (brukerInput.equals("3")){
+      // Brukeren blir presentert en undermeny hvor de kan velge en statistikk de oensker aa se.
       System.out.println("\n1. Total antall utskrevne resepter paa vanedannende legemidler\n2. Totalt antall utskrevne resepter på narkotiske legemidler\n3. Mulig misbruk av narkotika");
       brukerInput = inputScanner.nextLine();
       if (brukerInput.equals("1"))
@@ -58,31 +71,43 @@ public class Hovedprog{
         System.out.println("\nUgyldig input!");
     }
 
+    // Dersom brukeren har tastet '4' kjoeres koden under.
     else if (brukerInput.equals("4")){
       System.out.println("\nHvilken fil vil du lese fra?\n");
+      // Her kan brukeren skrive inn filnavnet de oensker aa lese fra.
       brukerInput = inputScanner.nextLine();
+      // Dersom alt gaar bra kjoeres den relevante metoden.
       try{
         lesFraFil(brukerInput);
         System.out.println("\nLa til informasjonen inn i systemet :)");
+      // Ellers catcher vi FileNotFoundException, og gir en feilmelding til brukeren.
       } catch (FileNotFoundException e){
         System.out.println("\nFant ikke filnavnet. Husk aa skrive .txt");
       }
     }
 
+    // Dersom brukeren har tastet '5' kjoeres koden under.
     else if (brukerInput.equals("5")){
+      // Dersom brukeren proever aa bruken en resept uten at det eksisterer noen faar de en feilmelding.
       if (resepter.stoerrelse() < 1)
         System.out.println("\nIngen resepter eksisterer!");
+      // Ellers kjoeres den relevante metoden.
       else
         brukResept();
     }
 
+    // Dersom brukeren har tastet '6' avsluttes programmet.
     else if (brukerInput.equals ("6"))
       System.exit(0);
 
+    // Paa slutten av hver kommandoLoekke(), kjoeres metoden igjen, slik at programmet bare slutter dersom brukeren velger det.
     kommandoLoekke();
   }
 
+  // Denne metoden skriver ut hvilke leger som har gitt resepter paa narkotiske legemidler og hvor mange.
+  // Deretter finner den alle pasienter som har minst en aktiv resept paa et narkotisk legemiddel og printer de ut, samt hvor mange.
   public static void misbruk(){
+    System.out.println("\nMulig misbruk hos leger:\n");
     for (Lege l:leger){
       int i = 0;
       if (l instanceof Spesialist){
@@ -90,20 +115,21 @@ public class Hovedprog{
           if (r.hentLegemiddel() instanceof Narkotisk)
             i++;
         if (i > 0)
-          System.out.println("\n Spesialist " + l.hentNavn() + " har skrvet ut " + i + " resepter paa narkotiske legemidler.");
+          System.out.println("\n  Spesialist " + l.hentNavn() + " har skrvet ut " + i + " resepter paa narkotiske legemidler.");
       }
     }
-    System.out.println("\n");
+    System.out.println("\n\nMulig misbruk hos pasienter:\n");
     for (Pasient p:pasienter){
       int i = 0;
       for (Resept r:p.hentResepter())
         if (r.hentLegemiddel() instanceof Narkotisk)
           i++;
       if (i > 0)
-        System.out.println("\n Pasient " + p.hentNavn() + " har " + i + " gyldig(e) resepter paa narkotiske legemidler.");
+        System.out.println("\n  Pasient " + p.hentNavn() + " har " + i + " gyldig(e) resepter paa narkotiske legemidler.");
     }
   }
 
+  // Denne metoden skriver ut hvor mange resepter det er paa narkotiske legemidler.
   public static void narkoStat(){
     int i = 0;
     for (Resept res:resepter){
@@ -113,6 +139,7 @@ public class Hovedprog{
     System.out.println("\n" + i + " av " + resepter.stoerrelse() + " resepter er narkotiske");
   }
 
+  // Denne metoden skriver ut hvor mange resepter det er paa vanedannende legemidler.
   public static void vaneStat(){
     int i = 0;
     for (Resept res:resepter){
@@ -122,15 +149,18 @@ public class Hovedprog{
     System.out.println("\n" + i + " av " + resepter.stoerrelse() + " resepter er vanedannende");
   }
 
+  // Denne metoden gir brukeren muligheten til aa bruke en av reseptene til en valgt pasient.
   public static void brukResept(){
+    // Vi oppretter en ny Lenkeliste, hvor vi legger til alle pasienter som har minst en aktiv resept.
     Liste<Pasient> pasListe = new Lenkeliste<Pasient>();
-    Pasient pas1 = null;
 
-    for (Pasient pas:pasienter){
+    for (Pasient pas:pasienter)
       if (pas.hentResepter().stoerrelse() > 0)
         pasListe.leggTil(pas);
-    }
 
+    // Vi lager en ny Pasient-variabel som blir satt til null.
+    // Saa lenge pas1 er null, kjoeres while-loekka, slik at brukeren faar flere "sjanser" til aa velge.
+    Pasient pas1 = null;
     while (pas1 == null){
       int i = 1;
       for (Pasient pas:pasListe)
@@ -139,6 +169,7 @@ public class Hovedprog{
       System.out.println("\nHvilken pasient vil du se resepter for?");
       try{
         pas1 = pasListe.hent(Integer.parseInt(inputScanner.nextLine()) - 1);
+        // Dersom brukeren skriver et tall utenfor rekkevidden til lista, eller noe som ikke kan gjoeres om til en int, skrives det ut en feilmelding.
       } catch (UgyldigListeIndeks e){
         System.out.println("\nUgyldig nummer!");
       } catch (NumberFormatException e){
@@ -149,9 +180,9 @@ public class Hovedprog{
     Resept valgtResept = null;
     while (valgtResept == null){
       int i = 1;
-      for (Resept res:pas1.hentResepter()){
+      for (Resept res:pas1.hentResepter())
         System.out.println(i++ +". " + res.hentLegemiddel().hentNavn() + " Reit: " + res.hentReit());
-      }
+
       System.out.println("\nHvilken resept vil du bruke?");
       try{
         valgtResept = pas1.hentResepter().hent(Integer.parseInt(inputScanner.nextLine()) - 1);
@@ -165,7 +196,6 @@ public class Hovedprog{
       System.out.println("\nBrukte resept paa " + valgtResept.hentLegemiddel().hentNavn() + ". Antall gjenvaerende reit: " + valgtResept.hentReit());
     else
       System.out.println("\nKunne ikke bruke resept paa " + valgtResept.hentLegemiddel().hentNavn() + " (ingen gjenvaerende reit).");
-
   }
 
   public static void leggTilResept(){
