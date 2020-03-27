@@ -16,21 +16,21 @@ public class Hovedprog{
 
   // Main-metoden printer ut en velkomst, og kjoerer metoden kommandoLoekke().
   public static void main(String[] args) throws FileNotFoundException{
-    System.out.println("\nVelkommen til karantene!");
+    System.out.println("\nVelkommen!");
     kommandoLoekke();
   }
 
   // Denne metoden fungerer som en hovedmeny for brukeren, hvor de kan navigere seg til de forskjellige delene av programmet.
   public static void kommandoLoekke() throws FileNotFoundException{
     // Her printes ut mulighetene brukeren har.
-    System.out.println("\n\nHovedmeny\n---------------\n1. Legg til...\n2. Skriv ut informasjon\n3. Statistikk\n4. Les fra fil\n5. Bruk resept\n6. Avslutt\n");
+    System.out.println("\n\n----------------Hovedmeny----------------\n1. Legg til...\n2. Skriv ut informasjon\n3. Statistikk\n4. Les fra fil\n5. Bruk resept\n6. Avslutt\n");
     // Her faar brukeren sette brukerInput som en valgt string.
     brukerInput = inputScanner.nextLine();
 
     // Dersom brukeren har tastet '1' kjoeres koden under.
     if (brukerInput.equals("1")){
       // Brukeren blir presentert en undermeny hvor de kan velge en hva de oensker aa legge til.
-      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...legemiddel\n4. ...resept");
+      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...legemiddel\n4. ...resept\n");
       brukerInput = inputScanner.nextLine();
       if (brukerInput.equals("1"))
         leggTilLege();
@@ -51,10 +51,29 @@ public class Hovedprog{
 
     // Dersom brukeren har tastet '2' kjoeres koden under.
     else if (brukerInput.equals("2")){
-      for (Lege lege:leger){
-        System.out.println(lege);
-      }
-    }
+     System.out.println("---------------- INFORMASJON OM LEGER ---------------------\n");
+     for (Lege lege:leger){
+       System.out.println(lege);
+       System.out.println();
+     }
+     System.out.println("---------------- INFORMASJON OM PASIENTER -----------------\n");
+     for (Pasient pasient:pasienter){
+       System.out.println(pasient);
+       System.out.println();
+     }
+     System.out.println("---------------- INFORMASJON OM LEGEMIDLER ----------------\n");
+     for (Legemiddel legemiddel:legemidler) {
+       System.out.println(legemiddel);
+       System.out.println();
+     }
+     System.out.println("---------------- INFORMASJON OM RESEPTER ------------------\n");
+     for (Resept resept:resepter){
+       System.out.println(resept);
+       System.out.println();
+     }
+     System.out.println("--------------------- OPPSUMMERING ----------------------\n");
+     System.out.println("Antall leger: " + leger.stoerrelse() + "\nAntall pasienter: " + pasienter.stoerrelse() + "\nAntall legemidler: " + legemidler.stoerrelse() + "\nAntall resepter: " + resepter.stoerrelse());
+   }
 
     // Dersom brukeren har tastet '3' kjoeres koden under.
     else if (brukerInput.equals("3")){
@@ -162,6 +181,7 @@ public class Hovedprog{
     // Saa lenge pas1 er null, kjoeres while-loekka, slik at brukeren faar flere "sjanser" til aa velge.
     Pasient pas1 = null;
     while (pas1 == null){
+      System.out.println();
       int i = 1;
       for (Pasient pas:pasListe)
         System.out.println(i++ + ". " + pas.hentNavn());
@@ -397,7 +417,7 @@ public class Hovedprog{
     brukerInput = inputScanner.nextLine();
 
     if (brukerInput.equals("1")){
-      System.out.println("Skriv inn navn:");
+      System.out.println("\nSkriv inn navn:");
       brukerInput = inputScanner.nextLine();
       Boolean gyldigNavn = true;
       for (Lege lege:leger){
@@ -406,20 +426,20 @@ public class Hovedprog{
 
       if (gyldigNavn){
         leger.leggTil(new Lege(brukerInput));
-        System.out.println("La til " + brukerInput);
+        System.out.println("\nLa til " + brukerInput);
       }
 
-      else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
+      else System.out.println("\nFikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
     }
 
     else if (brukerInput.equals("2")){
-      System.out.println("Skriv inn navn:");
+      System.out.println("\nSkriv inn navn:");
       String navn = inputScanner.nextLine();
       int id = 0;
 
       Boolean okNr = false;
       while (!okNr){
-        System.out.println("Skriv inn kontroll id:");
+        System.out.println("\nSkriv inn kontroll id:");
         brukerInput = inputScanner.nextLine();
         try{
           id = Integer.parseInt(brukerInput);
@@ -436,10 +456,10 @@ public class Hovedprog{
 
       if (gyldigNavn){
         leger.leggTil(new Spesialist(navn, id));
-        System.out.println("La til " + navn);
+        System.out.println("\nLa til " + navn);
       }
 
-      else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
+      else System.out.println("\nFikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
     }
 
     else if(brukerInput.equals("3"));
