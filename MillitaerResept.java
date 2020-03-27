@@ -3,7 +3,11 @@ public class MillitaerResept extends HvitResept{
     public MillitaerResept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient pasient, int reit){
         super(legemiddel, utskrivendeLege, pasient, reit);
     }
-
+    @Override
+    public String hentType(){
+      return "militaer";
+    }
+    
     @Override
     public double prisAaBetale(){
         return 0;

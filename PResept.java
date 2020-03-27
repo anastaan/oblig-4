@@ -7,13 +7,18 @@ public class PResept extends HvitResept{
     }
 
     @Override
+    public String hentType(){
+      return "p";
+    }
+
+    @Override
     public String farge() {
         return super.farge();
     }
 
     @Override
     public double prisAaBetale(){
-  
+
         if (this.hentLegemiddel().hentPris() <= 108){
             return 0;
         }

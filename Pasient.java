@@ -45,4 +45,8 @@ class Pasient{
     return navn;
   }
 
+  public String hentFodselsnr() {
+    return fodselsnummer;
+  }
+
 }

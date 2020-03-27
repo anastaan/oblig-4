@@ -4,6 +4,10 @@ public class HvitResept extends Resept{
         super(legemiddel, utskrivendeLege, pasient, reit);
     }
 
+    public String hentType() {
+      return "hvit";
+    }
+
     @Override
     public double prisAaBetale(){
         return this.hentLegemiddel().hentPris();

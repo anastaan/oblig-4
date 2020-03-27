@@ -12,6 +12,10 @@ public class Vanedannende extends Legemiddel implements VaneFace{
         return styrke;
     }
 
+    public String hentType() {
+      return "vanedannende";
+    }
+
     @Override
     public String toString(){//overriding the toString() method
         return "Vanedannende legemiddel:\n    navn: " + this.hentNavn() +

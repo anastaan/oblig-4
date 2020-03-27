@@ -1,14 +1,14 @@
 
 
 public abstract class Legemiddel{
-   
+
     public static int idTeller = 0;
     private int id;
     private String navn;
     private double pris;
     private double virkestoff;
 
-    
+
     public Legemiddel(String n, double p, double v){
         id = idTeller;
         idTeller++;
@@ -34,6 +34,9 @@ public abstract class Legemiddel{
         return id;
     }
 
+    protected  abstract String hentType();
+
+    
     protected void settNyPris(int nyPris){
         pris = nyPris;
     }
