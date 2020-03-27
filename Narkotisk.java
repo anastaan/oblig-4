@@ -7,6 +7,9 @@ public class Narkotisk extends Legemiddel implements VaneFace{
         this.styrke = styrke;
     }
 
+    public String hentType() {
+      return "narkotisk";
+    }
 
     public int hentStyrke() {
         return styrke;

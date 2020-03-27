@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.PrintWriter;
 
 public class Hovedprog{
   // Instansvariablene er statiske, slik at vi faar tilgang til de.
@@ -16,21 +17,21 @@ public class Hovedprog{
 
   // Main-metoden printer ut en velkomst, og kjoerer metoden kommandoLoekke().
   public static void main(String[] args) throws FileNotFoundException{
-    System.out.println("\nVelkommen!");
+    System.out.println("\nVelkommen til karantene!");
     kommandoLoekke();
   }
 
   // Denne metoden fungerer som en hovedmeny for brukeren, hvor de kan navigere seg til de forskjellige delene av programmet.
   public static void kommandoLoekke() throws FileNotFoundException{
     // Her printes ut mulighetene brukeren har.
-    System.out.println("\n\n----------------Hovedmeny----------------\n1. Legg til...\n2. Skriv ut informasjon\n3. Statistikk\n4. Les fra fil\n5. Bruk resept\n6. Avslutt\n");
+    System.out.println("\n\nHovedmeny\n---------------\n1. Legg til...\n2. Skriv ut informasjon\n3. Statistikk\n4. Les fra fil\n5. Bruk resept\n6. Skriv til fil\n7. Avslutt");
     // Her faar brukeren sette brukerInput som en valgt string.
     brukerInput = inputScanner.nextLine();
 
     // Dersom brukeren har tastet '1' kjoeres koden under.
     if (brukerInput.equals("1")){
       // Brukeren blir presentert en undermeny hvor de kan velge en hva de oensker aa legge til.
-      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...legemiddel\n4. ...resept\n");
+      System.out.println("\n1. ...lege\n2. ...pasient\n3. ...legemiddel\n4. ...resept");
       brukerInput = inputScanner.nextLine();
       if (brukerInput.equals("1"))
         leggTilLege();
@@ -51,29 +52,8 @@ public class Hovedprog{
 
     // Dersom brukeren har tastet '2' kjoeres koden under.
     else if (brukerInput.equals("2")){
-     System.out.println("---------------- INFORMASJON OM LEGER ---------------------\n");
-     for (Lege lege:leger){
-       System.out.println(lege);
-       System.out.println();
-     }
-     System.out.println("---------------- INFORMASJON OM PASIENTER -----------------\n");
-     for (Pasient pasient:pasienter){
-       System.out.println(pasient);
-       System.out.println();
-     }
-     System.out.println("---------------- INFORMASJON OM LEGEMIDLER ----------------\n");
-     for (Legemiddel legemiddel:legemidler) {
-       System.out.println(legemiddel);
-       System.out.println();
-     }
-     System.out.println("---------------- INFORMASJON OM RESEPTER ------------------\n");
-     for (Resept resept:resepter){
-       System.out.println(resept);
-       System.out.println();
-     }
-     System.out.println("--------------------- OPPSUMMERING ----------------------\n");
-     System.out.println("Antall leger: " + leger.stoerrelse() + "\nAntall pasienter: " + pasienter.stoerrelse() + "\nAntall legemidler: " + legemidler.stoerrelse() + "\nAntall resepter: " + resepter.stoerrelse());
-   }
+        skrivUt();
+        }
 
     // Dersom brukeren har tastet '3' kjoeres koden under.
     else if (brukerInput.equals("3")){
@@ -115,8 +95,13 @@ public class Hovedprog{
         brukResept();
     }
 
+    //Dersom brukeren taster 6 skal informasjonen skrives til fil
+    else if (brukerInput.equals("6")) {
+      lesTilFil();
+    }
+
     // Dersom brukeren har tastet '6' avsluttes programmet.
-    else if (brukerInput.equals ("6"))
+    else if (brukerInput.equals ("7"))
       System.exit(0);
 
     // Paa slutten av hver kommandoLoekke(), kjoeres metoden igjen, slik at programmet bare slutter dersom brukeren velger det.
@@ -181,7 +166,6 @@ public class Hovedprog{
     // Saa lenge pas1 er null, kjoeres while-loekka, slik at brukeren faar flere "sjanser" til aa velge.
     Pasient pas1 = null;
     while (pas1 == null){
-      System.out.println();
       int i = 1;
       for (Pasient pas:pasListe)
         System.out.println(i++ + ". " + pas.hentNavn());
@@ -417,7 +401,7 @@ public class Hovedprog{
     brukerInput = inputScanner.nextLine();
 
     if (brukerInput.equals("1")){
-      System.out.println("\nSkriv inn navn:");
+      System.out.println("Skriv inn navn:");
       brukerInput = inputScanner.nextLine();
       Boolean gyldigNavn = true;
       for (Lege lege:leger){
@@ -426,20 +410,20 @@ public class Hovedprog{
 
       if (gyldigNavn){
         leger.leggTil(new Lege(brukerInput));
-        System.out.println("\nLa til " + brukerInput);
+        System.out.println("La til " + brukerInput);
       }
 
-      else System.out.println("\nFikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
+      else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
     }
 
     else if (brukerInput.equals("2")){
-      System.out.println("\nSkriv inn navn:");
+      System.out.println("Skriv inn navn:");
       String navn = inputScanner.nextLine();
       int id = 0;
 
       Boolean okNr = false;
       while (!okNr){
-        System.out.println("\nSkriv inn kontroll id:");
+        System.out.println("Skriv inn kontroll id:");
         brukerInput = inputScanner.nextLine();
         try{
           id = Integer.parseInt(brukerInput);
@@ -456,10 +440,10 @@ public class Hovedprog{
 
       if (gyldigNavn){
         leger.leggTil(new Spesialist(navn, id));
-        System.out.println("\nLa til " + navn);
+        System.out.println("La til " + navn);
       }
 
-      else System.out.println("\nFikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
+      else System.out.println("Fikk ikke lagt til " + brukerInput + ", noen heter det allerede!");
     }
 
     else if(brukerInput.equals("3"));
@@ -468,6 +452,103 @@ public class Hovedprog{
       System.out.println("\nUgyldig input!");
       leggTilLege();
     }
+
+  }
+
+//metode som skriver alle elementer i en fil
+  public static void lesTilFil(){
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("Hvilken fil vil du skrive til (husk å legge til filendelse, eks.: .txt)");
+    String filnavn = scanner.nextLine();
+
+    PrintWriter fil = null;
+    try {
+      fil = new PrintWriter(filnavn);
+    }
+    catch (Exception e) {
+      System.out.println("Kan ikke lage filen " + filnavn);
+    }
+
+      //skriver først pasienter
+    if (pasienter.stoerrelse() !=0) {
+      fil.print("# Pasienter (navn, fnr)");
+      fil.println();
+      for (Pasient pasient:pasienter) {
+        fil.print(pasient.hentNavn() + "," + pasient.hentFodselsnr());
+        fil.println();
+      }
+    }
+
+      //skriver legemidler
+    if (legemidler.stoerrelse() !=0) {
+      fil.print("# Legemidler (navn,type,pris,virkestoff,[styrke])");
+      fil.println();
+      for (Legemiddel legemiddel:legemidler) {
+        fil.print(legemiddel.hentNavn() + "," + legemiddel.hentType() + "," + legemiddel.hentPris() + "," + legemiddel.hentVirkestoff() + ",");
+        if (legemiddel instanceof Vanedannende) {
+          Vanedannende vanedannende = (Vanedannende) legemiddel;
+          fil.print(vanedannende.hentStyrke());
+        }
+        if (legemiddel instanceof Narkotisk) {
+          Narkotisk narkotisk = (Narkotisk) legemiddel;
+          fil.print(narkotisk.hentStyrke());
+        }
+        fil.println();
+    }
+    //skriver leger
+    if (leger.stoerrelse() != 0) {
+      fil.print("# Leger (navn, kontrollid / 0 hvis vanlig lege)");
+      fil.println();
+      for (Lege lege:leger) {
+        fil.print(lege.hentNavn() + ",");
+        if (lege instanceof Spesialist) {
+          Spesialist spes = (Spesialist) lege;
+          fil.print(spes.hentKontrollId());
+        }
+        else fil.print("0");
+        fil.println();
+      }
+    }
+
+  //skriver resepter
+  if (resepter.stoerrelse() != 0) {
+    fil.print("# Resepter (legemiddelNummer,legeNavn,pasientID,type,[reit])");
+    fil.println();
+    for (Resept resept:resepter) {
+      fil.print(resept.hentId() + "," + resept.hentLege().hentNavn() + "," + resept.hentPasientId() + "," + resept.hentType());
+      if (!(resept instanceof PResept)) fil.print("," + resept.hentReit());
+      fil.println();
+    }
+  }
+  fil.close();
+  }
+}
+//lesTilFil slutt
+
+  public static void skrivUt() {
+    System.out.println("----------------INFORMASJON OM LEGER: -------------------\n");
+    for (Lege lege:leger){
+      System.out.println(lege);
+      System.out.println();
+    }
+    System.out.println("----------------INFORMASJON OM PASIENTER: ---------------\n");
+    for (Pasient pasient:pasienter){
+      System.out.println(pasient);
+      System.out.println();
+    }
+    System.out.println("---------------INFORMASJON OM LEGEMIDLER: ----------------\n");
+    for (Legemiddel legemiddel:legemidler) {
+      System.out.println(legemiddel);
+      System.out.println();
+    }
+    System.out.println("---------------INFORMASJON OM RESEPTER: ----------------\n");
+    for (Resept resept:resepter){
+      System.out.println(resept);
+      System.out.println();
+    }
+    System.out.println("---------------------OPPSUMMERING: -------------------\n");
+    System.out.println("Antall leger: " + leger.stoerrelse() + "\nAntall pasienter: " + pasienter.stoerrelse() + "\nAntall legemidler: " + legemidler.stoerrelse() + "\nAntall resepter: " + resepter.stoerrelse());
 
   }
 

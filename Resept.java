@@ -9,10 +9,10 @@ public abstract class Resept{
 
     public Resept(Legemiddel legemiddel, Lege utskrivendeLege, Pasient pasient, int reit) throws NullPointerException{
       if (legemiddel == null || utskrivendeLege == null || pasient == null) throw new NullPointerException();
-      
+
       id = idTeller;
       idTeller++;
-  
+
       this.legemiddel = legemiddel;
       this.utskrivendeLege = utskrivendeLege;
       this.pasient = pasient;
@@ -43,7 +43,7 @@ public abstract class Resept{
       if (reit > 0){
           reit --;
           return true;
-      } 
+      }
       return false;
     }
 
@@ -52,4 +52,6 @@ public abstract class Resept{
     public abstract double prisAaBetale();
 
     public abstract String toString();
+
+    public abstract String hentType();
 }

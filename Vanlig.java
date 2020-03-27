@@ -6,6 +6,10 @@ public class Vanlig extends Legemiddel{
         super(navn, pris, virkestoff);
     }
 
+    public String hentType() {
+      return "vanlig";
+    }
+    
     @Override
     public String toString(){//overriding the toString() method
         return "Vanlig legemiddel:\n    navn: " + this.hentNavn() +
